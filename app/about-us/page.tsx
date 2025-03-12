@@ -1,9 +1,12 @@
-import Navigation from "../../components/navigation";
+import { Metadata } from "next";
+
+export const metadata :Metadata = {
+  title: 'AboutUs',
+}
 
 export default function AboutUs() {
   return (
     <div>
-      <Navigation />
       <h1>AboutUs</h1>
     </div>
   );
