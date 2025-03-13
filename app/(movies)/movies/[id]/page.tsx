@@ -1,34 +1,33 @@
-import { API_URL } from "../../../(home)/page";
-
-async function getMovie(id: string) {
-  console.log(`fetching movies: ${Date.now()}`);
-  await new Promise((resolve) => setTimeout(resolve, 2000));
-  const response = await fetch(`${API_URL}/${id}`);
-  const json = await response.json();
-  return json;
-}
-
-async function getVideos(id: string) {
-  console.log(`fetching videos: ${Date.now()}`);
-  await new Promise((resolve) => setTimeout(resolve, 2000));
-  const response = await fetch(`${API_URL}/${id}/videos`);
-  const json = await response.json();
-  return json;
-}
+import { Suspense } from "react";
+import MovieInfo from "../../../../components/movie-info";
+import MovieVideos from "../../../../components/movie-videos";
 
 export default async function MovieDeatil({ params }: { params: { id: string } }) {
   const { id } = await params;
-  console.log(`====================`);
-  console.log(`start fetching`);
+  /**
+   * 순차적으로 시작
+   */
   // const movie = await getMovie(id);
   // const videos = await getVideos(id);
 
-  const [movie, videos] = await Promise.all([getMovie(id), getVideos(id)]);
+  /**
+   * 동시에 시작, but 모든 작업이 끝나야 완료
+   */
+  // const [movie, videos] = await Promise.all([getMovie(id), getVideos(id)]);
 
-  console.log(`end fetching`);
-  console.log(`====================`);
-
+  /**
+   * suspense fetch하고 fallback 내용을 loading 중에 보여줌
+   * 각각의 suspense는 각각 실행
+   */
   return (
-    <h1>{movie.title}</h1>
+    <div>
+      <h3>Movie Detail</h3>
+      <Suspense fallback={<div>Loading movie...</div>}>
+        <MovieInfo id={id} />
+      </Suspense>
+      <Suspense fallback={<div>Loading videos...</div>}>
+        <MovieVideos id={id} />
+      </Suspense>
+    </div>
   );
 }
