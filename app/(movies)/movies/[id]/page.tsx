@@ -25,6 +25,7 @@ export default async function MovieDeatil({ params }: { params: { id: string } }
       <Suspense fallback={<div>Loading movie...</div>}>
         <MovieInfo id={id} />
       </Suspense>
+      <h4>Videos</h4>
       <Suspense fallback={<div>Loading videos...</div>}>
         <MovieVideos id={id} />
       </Suspense>
